@@ -1,5 +1,36 @@
-function playRound(playerSelection, computerSelection) {
-  // your code here!
+function playRound() {
+  const playerSelection = getPlayerChoice();
+  const computerSelection = getComputerChoice();
+  if (playerSelection == computerSelection) {
+    return "It's a bloody draw and a bloody waste of time..."
+  }
+  else if (playerSelection == "rock") {
+    if (computerSelection == "paper") {
+      return `You lost to computer's ${computerSelection}`
+    } 
+    else {
+      return `You win the computer's ${computerSelection}!!`
+    }
+  }
+  else if (playerSelection == "paper") {
+    if (computerSelection == "scissors") {
+      return `You lost to computer's ${computerSelection}`
+    } 
+    else {
+      return `You win the computer's ${computerSelection}!!`
+    }
+  }
+  else if (playerSelection == "scissors") {
+    if (computerSelection == "rock") {
+      return `You lost to computer's ${computerSelection}`
+    } 
+    else {
+      return `You win the computer's ${computerSelection}!!`
+    }
+  }
+  else {
+    return `extraordinary case of computer:${computerSelection} and player:${playerSelection} not handled yet`
+  }
 }
 
 function getComputerChoice() {
@@ -8,9 +39,9 @@ function getComputerChoice() {
   return choiceArray[elementLocation]
 }
 
-function getPlayerSelection() {
-  let playerInput = prompt().toLowerCase()
-  if (playerInput == "rock" || playerInput == "paper" || playerInput == "scissors") {
+function getPlayerChoice() {
+  let playerInput = prompt("Is your choice rock, paper or scissors?").toLowerCase()
+  if (["rock", "paper", "scissors"].includes(playerInput)) {
     return playerInput
   }
   else {
@@ -18,5 +49,6 @@ function getPlayerSelection() {
   }
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
+function game() {
+  
+}

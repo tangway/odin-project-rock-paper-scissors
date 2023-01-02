@@ -4,78 +4,139 @@ let drawCounter = 0;
 let roundCounter = 0;
 let inputErrorCounter = 0;
 
-function game() {
-  while (playerCounter < 3 && computerCounter < 3) {
-    roundCounter += 1;
-    console.log(playRound());
+function scoreCheck() {
+  playerScore.textContent = `Player: ${playerCounter}`;
+  computerScore.textContent = `Computer: ${computerCounter}`;
+  drawScore.textContent = `Draws: ${drawCounter}`;
+
+  if (playerCounter === 5) {
+    result.textContent = "YOU ARE THE WINNER!!!!";
+  } else if (computerCounter === 5) {
+    result.textContent = "the cb computer won...";
   }
-  if (playerCounter == 3) {
-    console.log("You are the f**k**g winner!!!!");
-  } else {
-    console.log("cb computer won...");
-  }
-  console.log("Computer Score is: " + computerCounter);
-  console.log("Player Score is: " + playerCounter);
-  console.log("No. of times there was a draw: " + drawCounter);
-  console.log("No. of rounds played: " + (roundCounter - inputErrorCounter));
-  console.log("No. of discarded rounds: " + inputErrorCounter);
-  console.log(
-    "Winner's effectiveness is: " +
-      (3 / (roundCounter - inputErrorCounter)) * 100 +
-      "%"
-  );
+  // console.log("Computer Score is: " + computerCounter);
+  // console.log("Player Score is: " + playerCounter);
+  // console.log("No. of times there was a draw: " + drawCounter);
+  // console.log("No. of rounds played: " + (roundCounter - inputErrorCounter));
+  // console.log("No. of discarded rounds: " + inputErrorCounter);
+  // console.log(
+  //   "Winner's effectiveness is: " +
+  //     (5 / (roundCounter - inputErrorCounter)) * 100 +
+  //     "%"
+  // );
 }
 
-function playRound() {
-  const playerSelection = getPlayerChoice();
+function playRound(e) {
+  if (playerCounter === 5 || computerCounter === 5) {
+    return;
+  }
+
+  const playerSelection = e.target.textContent;
+  console.log("playerSelection: " + playerSelection);
   const computerSelection = getComputerChoice();
+  console.log("computerSelection: " + computerSelection);
+
   if (playerSelection == computerSelection) {
     drawCounter += 1;
-    return "It's a bloody draw and a bloody waste of time...";
+    result.textContent = "Current Round: Draw";
   } else if (playerSelection == "rock") {
     if (computerSelection == "paper") {
       computerCounter += 1;
-      return `You lost to computer's ${computerSelection}`;
+      result.textContent = `Current Round: You lost to computer's ${computerSelection}`;
     } else {
       playerCounter += 1;
-      return `You win the computer's ${computerSelection}!!`;
+      result.textContent = `Current Round: You win the computer's ${computerSelection}!!`;
     }
   } else if (playerSelection == "paper") {
     if (computerSelection == "scissors") {
       computerCounter += 1;
-      return `You lost to computer's ${computerSelection}`;
+      result.textContent = `You lost to computer's ${computerSelection}`;
     } else {
       playerCounter += 1;
-      return `You win the computer's ${computerSelection}!!`;
+      result.textContent = `You win the computer's ${computerSelection}!!`;
     }
   } else if (playerSelection == "scissors") {
     if (computerSelection == "rock") {
       computerCounter += 1;
-      return `You lost to computer's ${computerSelection}`;
+      result.textContent = `You lost to computer's ${computerSelection}`;
     } else {
       playerCounter += 1;
-      return `You win the computer's ${computerSelection}!!`;
+      result.textContent = `You win the computer's ${computerSelection}!!`;
     }
-  } else {
-    inputErrorCounter += 1;
-    return playerSelection;
-    // return `extraordinary case of computer:${computerSelection} and player:${playerSelection} not handled yet`
   }
+
+  scoreCheck();
 }
 
 function getComputerChoice() {
-  let elementLocation = Math.floor(Math.random() * 3);
+  let elementIndex = Math.floor(Math.random() * 3);
   let choiceArray = ["rock", "paper", "scissors"];
-  return choiceArray[elementLocation];
+  return choiceArray[elementIndex];
 }
 
-function getPlayerChoice() {
-  let playerInput = prompt(
-    "Is your choice rock, paper or scissors?"
-  ).toLowerCase();
-  if (["rock", "paper", "scissors"].includes(playerInput)) {
-    return playerInput;
-  } else {
-    return "invalid input mf";
-  }
-}
+// function getPlayerChoice(e) {
+//   if (["rock", "paper", "scissors"].includes(e.target.textContent)) {
+//     console.log("from getPlayerChoice function: "+ e.target.textContent)
+//     return e.target.textContent;
+//   } else {
+//     return "invalid input";
+//   }
+// }
+
+const rock = document.querySelector("#rock");
+rock.addEventListener("click", playRound);
+
+const paper = document.querySelector("#paper");
+paper.addEventListener("click", playRound);
+
+const scissors = document.querySelector("#scissors");
+scissors.addEventListener("click", playRound);
+
+const result = document.querySelector(".result");
+
+const playerScore = document.querySelector(".playerScore");
+
+const computerScore = document.querySelector(".computerScore");
+
+const drawScore = document.querySelector(".drawScore");
+
+/**
+ * Visualizing the flow i have in my head so i can correct it:
+ * click ROCK on index.html -> eventlistener sends "rock" to getPlayerChoice()
+ * -> so playRound() can use it
+ *
+ * in the flow above, if i initialize playRound() first, i havnt figured out how
+ * to let the code wait for input from the user. previously there was a prompt
+ * doing the job. but now if i run playRound() it returns "invalid input".
+ * this the main reason i been stuck on this for so long
+ *
+ *
+ **/
+
+/**
+ * syntax of addEventListener with a callback function with an argument:
+ * element.addEventListener('click', (parameter) => myFunction(parameter));
+ *
+ * this seems to suggest that the parameter is taken from the element, will
+ * investigate
+ */
+
+/**
+ * now how do i modify the game() function to only run when i click any of the
+ * buttons?
+ * what if i dont use the loop.. and use and if condition that checks the
+ * player counters!
+ *
+ * only if the counters are less than 5 then the playRound game logic will
+ * execute?
+ * OR
+ * at the end of each result pattern, there has to be a check on the counters
+ * so we would know if there is a winner. (this works)
+ * maybe it can be written into another function that does this check so that
+ * it can be called every time
+ *
+ */
+
+/**
+ *
+ */
